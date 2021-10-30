@@ -100,24 +100,21 @@ async function run() {
             res.json(result);
         });
 
-        // // update status
-        // app.put("/placeorder/:id", async (req, res) => {
-        //     const id = req.params.id;
-        //     const updateStatus = req.body;
-        //     const status = "Confirm"
-        //     const filter = { _id: ObjectId(id) };
-        //     const options = { upsert: true };
-        //     const updateDoc = {
-        //         $set: {
-        //             status: updateStatus.status,
+        // update status
+        app.put("/placeorder/:id", async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: {
+                    status: "Approve"
 
-        //         },
-        //     };
-        //     const result = await ordersCollection.updateOne(filter, updateDoc, options);
-        //     console.log("updated product", req.body);
-        //     res.json(result);
-        //     console.log(id, updateStatus)
-        // });
+                },
+            };
+            const result = await ordersCollection.updateOne(filter, updateDoc, options);
+            console.log("updated product", req.body);
+            res.json(result);
+        });
 
         console.log("Database connect");
     } finally {
