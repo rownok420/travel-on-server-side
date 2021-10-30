@@ -62,13 +62,6 @@ async function run() {
             res.json(result);
         });
 
-        // app.get("/singleorder/:id", async (req, res) => {
-        //     const id = req.params.id;
-        //     const query = { _id: ObjectId(id) };
-        //     const result = await ordersCollection.findOne(query);
-        //     res.json(result);
-        // });
-
 
         // POST SERVICE API
         app.post("/addservice", async (req, res) => {
