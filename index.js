@@ -11,21 +11,18 @@ const cors = require("cors");
 app.use(cors());
 app.use(express.json());
 
-
-const uri =
-    `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.amu9y.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.amu9y.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
-
 
 async function run() {
     try {
         await client.connect();
         const database = client.db("travelOn");
         const serviceCollection = database.collection("service");
-        const ordersCollection = database.collection("orders")
+        const ordersCollection = database.collection("orders");
 
         //  GET API
         app.get("/addservice", async (req, res) => {
@@ -46,6 +43,20 @@ async function run() {
             const result = await serviceCollection.findOne(query);
             res.json(result);
         });
+
+        app.get("/myOrder/:email", async (req, res) => {
+            const result = await ordersCollection
+                .find({ email: req.params.email })
+                .toArray();
+            res.json(result);
+        });
+
+        // app.get("/singleorder/:id", async (req, res) => {
+        //     const id = req.params.id;
+        //     const query = { _id: ObjectId(id) };
+        //     const result = await ordersCollection.findOne(query);
+        //     res.json(result);
+        // });
 
         // POST SERVICE API
         app.post("/addservice", async (req, res) => {
@@ -76,33 +87,26 @@ async function run() {
             res.json(result);
         });
 
-        // update status
-        app.put("/placeorder/:id", async (req, res) => {
-            const id = req.params.id;
-            const updateStatus = req.body;
-            // const filter = { _id: ObjectId(id) };
-            // const options = { upsert: true };
-            // const updateDoc = {
-            //     $set: {
-            //         status: updateStatus.status,
-                    
-            //     },
-            // };
-            // const result = await ordersCollection.updateOne(filter, updateDoc, options);
-            // console.log("updated product", req.body);
-            // res.json(result);
-            console.log(id, updateStatus)
-        });
+        // // update status
+        // app.put("/placeorder/:id", async (req, res) => {
+        //     const id = req.params.id;
+        //     const updateStatus = req.body;
+        //     const status = "Confirm"
+        //     const filter = { _id: ObjectId(id) };
+        //     const options = { upsert: true };
+        //     const updateDoc = {
+        //         $set: {
+        //             status: updateStatus.status,
 
+        //         },
+        //     };
+        //     const result = await ordersCollection.updateOne(filter, updateDoc, options);
+        //     console.log("updated product", req.body);
+        //     res.json(result);
+        //     console.log(id, updateStatus)
+        // });
 
-
-
-
-
-
-        
-        console.log("Database connect")
-
+        console.log("Database connect");
     } finally {
         // await client.close();
     }
@@ -116,4 +120,3 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
     console.log("Listing to Port", port);
 });
-
