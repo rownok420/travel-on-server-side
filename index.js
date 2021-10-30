@@ -23,20 +23,30 @@ async function run() {
         const database = client.db("travelOn");
         const serviceCollection = database.collection("service");
         const ordersCollection = database.collection("orders");
+        const destinationCollections = database.collection("destination")
 
-        //  GET API
+        //  GET DESTINATION API
+        app.get("/destination", async (req, res) => {
+            const cursor = destinationCollections.find({});
+            const services = await cursor.toArray();
+            res.send(services);
+        });
+
+        //  GET SERVICE API
         app.get("/addservice", async (req, res) => {
             const cursor = serviceCollection.find({});
             const services = await cursor.toArray();
             res.send(services);
         });
 
+        // GET ORDER API
         app.get("/placeorder", async (req, res) => {
             const cursor = ordersCollection.find({});
             const services = await cursor.toArray();
             res.json(services);
         });
 
+        // GET SINGLE ORDER DATA
         app.get("/placeorder/:id", async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
@@ -44,6 +54,7 @@ async function run() {
             res.json(result);
         });
 
+        // FILTER ORDER DATA WITH EMAIL
         app.get("/myOrder/:email", async (req, res) => {
             const result = await ordersCollection
                 .find({ email: req.params.email })
@@ -58,6 +69,7 @@ async function run() {
         //     res.json(result);
         // });
 
+
         // POST SERVICE API
         app.post("/addservice", async (req, res) => {
             const newService = req.body;
@@ -68,6 +80,7 @@ async function run() {
             res.json(result);
         });
 
+        
         // POST PLACE ORDER API
         app.post("/placeorder", async (req, res) => {
             const order = req.body;
