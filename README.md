@@ -4,34 +4,11 @@
 ## Table of Contents
 
 - [Live Server](#live-server)
-- [How to run](#how-to-run)
-- [About Project](#about-project)
 
 ## Live Server
 
 https://travel-on-4c87a.web.app/
 
-## How to run
-
-1. Clone this repository
-   
-   ```sh
-   https://github.com/programming-hero-web-course1/tourism-or-delivery-website-server-side-rownok420
-   ```
-
-2. Run
-   
-    ```sh
-    npm install
-    ```
-   
-3. Then run to see project in live server
-   
-   ```sh
-   npm start
-   ```
-   
-4. This app should be available in http://localhost:3000/
 
 ## About Project
 
